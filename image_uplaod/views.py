@@ -74,8 +74,11 @@ def HomePage(request):
     ordered_user_images = list(user_landscape_images) + list(user_portrait_images)
 
     form = ImageUploadForm()
+    # Access the username of the logged-in user
+    username = request.user.username
+    
 
-    return render(request, 'home.html', {'ordered_user_images': ordered_user_images, 'form': form})
+    return render(request, 'home.html', {'ordered_user_images': ordered_user_images, 'form': form ,'username': username})
 
 # Add this function to determine image orientation
 def get_image_orientation(image):
@@ -96,7 +99,7 @@ def delete_image(request, image_id):
 # Display page view
 def display_image(request):
     uploaded_images = UploadedImage.objects.all()
-    return render(request, 'user_image.html', {'uploaded_images': uploaded_images})
+    return render(request, {'uploaded_images': uploaded_images})
 
 
 # Sign up page view
