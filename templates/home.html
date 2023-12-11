@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styles for the container */
+        body {
+            background-color: #2c3e50; 
+        }
+
+        .container {
+            margin-top: 60px;
+            margin-left: 23%;
+            font-size: 28px
+
+        }
+
+        /* Custom styles for form group */
+        .form-group {
+            margin-bottom: 30px;
+            font-size: 25px
+            
+        }
+        .box{
+            margin-left: 20%;
+            
+        }
+        .form-group-image{
+            margin-bottom: 3px;
+            font-size: 25px;
+                  
+        }
+         .btn-primary{
+            margin-top: 20px;
+            margin-left: 150px;
+            border-radius: 12px
+        
+            
+         }
+        label{
+           font-size: 25px;
+           padding: auto;
+        }
+        .form-group{
+            font-size: 30px;
+          
+        }
+    </style>
+
+    <title>Image Upload Page</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Display the messages -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div ><h1>You Can Upload Your Image Here...</h1></div>
+
+        <div class="box">
+            <form method="post" enctype="multipart/form-data" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="image_type">Image Type:</label>
+                    <select name="image_type" class="form-control">
+                        <option value="portrait">Portrait</option>
+                        <option value="landscape">Landscape</option>
+                    </select>
+                </div>
+                <div class="form-group-image">
+                    <label for="image">Upload Image:</label>
+                    <input type="file" name="image" accept="image/*" class="form-control-file">
+                </div>
+                <button type="submit" class="btn-primary">Upload Image</button>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>
