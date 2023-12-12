@@ -180,6 +180,7 @@
         a:hover {
             text-decoration: underline;
         }
+       
     </style>
 </head>
 <body>
@@ -191,9 +192,18 @@
         <p>"Free, Fast, and Fabulous: Start </p>
         <p>Uploading Your Images Now!"</p>
     </div>
+
+    <!-- {% if error_message %}
+    <p style="color: red; text-align: left;">{{ error_message }}</p>
+    {% endif %} -->
+
     <form action="" method="post">
         {% csrf_token %} 
         <h3>Signup Here</h3>
+        <!-- Display error message -->
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
 
         <label for="username">Username</label>
         <input type="text" placeholder="Username" name="username" id="username" required>
