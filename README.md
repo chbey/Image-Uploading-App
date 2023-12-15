@@ -2,7 +2,9 @@
 
 This web application is built using Django, HTML, and CSS. It provides a platform for users to sign up, log in, upload images with specific types, and view their uploaded images in a gallery.
 
+
 ## Features
+
 
 1. **Signup and Login:**
    - Users can create an account by signing up with a username, email, and password.
