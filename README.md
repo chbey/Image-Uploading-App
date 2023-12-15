@@ -64,6 +64,7 @@ This sorting mechanism allows for a visually appealing arrangement of images in 
 ### Installation
 
 1. Clone the repository:
+   git clone https://github.com/chbey/Image-Uploading-App
 
 
 ### Usage
