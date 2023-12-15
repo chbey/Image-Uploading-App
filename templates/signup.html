@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Design by foolishdeveloper.com -->
     <title>Signup Page</title>
- 
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
@@ -18,7 +19,7 @@
         }
 
         body {
-            background-color: #2c3e50;
+            background-color: #f4f4f4; /* Soft gray background */
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
@@ -39,9 +40,9 @@
 
         .shape:first-child {
             background: linear-gradient(
-                #1845ad,
-                #23a2f6
-            );
+                #fad390,
+                #f8c471
+            ); /* Gradient for a warm and friendly feel */
             left: -80px;
             top: -80px;
         }
@@ -49,9 +50,9 @@
         .shape:last-child {
             background: linear-gradient(
                 to right,
-                #ff512f,
-                #f09819
-            );
+                #badc58,
+                #52c7a5
+            ); /* Gradient for a fresh and inviting feel */
             right: -30px;
             bottom: -80px;
         }
@@ -59,25 +60,24 @@
         form {
             height: 500px;
             width: 400px;
-            background-color: rgba(255, 255, 255, 0.13);
+            background-color: #ffffff;
             position: absolute;
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-            padding: 50px 35px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            color: #333;
         }
 
         form * {
             font-family: 'Poppins', sans-serif;
-            color: black;
+            color: #333;
             letter-spacing: 0.5px;
             outline: none;
             border: none;
@@ -85,7 +85,7 @@
 
         form h3 {
             font-size: 32px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 42px;
             text-align: center;
             margin-bottom: 20px;
@@ -101,35 +101,41 @@
 
         input {
             display: block;
-            height: 40px;
+            height: 45px;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.07);
-            border-radius: 3px;
-            padding: 0 10px;
-            margin-top: 2px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 0 12px;
+            margin-top: 8px;
             font-size: 14px;
-            font-weight: 300;
+            font-weight: 400;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #63a8e5;
         }
 
         ::placeholder {
-            color: #e5e5e5;
+            color: #868e96;
         }
 
         button {
             margin-top: 20px;
             width: 100%;
-            background-color: #ffffff;
-            color: #080710;
+            background-color: #63a8e5;
+            color: #fff;
             padding: 15px 0;
             font-size: 18px;
             font-weight: 600;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #23a2f6;
-            color: #ffffff;
+            background-color: #4a8ed6;
         }
 
         .social {
@@ -138,10 +144,10 @@
         }
 
         .social div {
-            background: #23a2f6;
+            background: #63a8e5;
             width: 150px;
-            border-radius: 3px;
-            padding: 5px 10px 10px 5px;
+            border-radius: 5px;
+            padding: 8px 10px;
             margin-right: 10px;
             color: #ffffff;
             text-align: center;
@@ -150,7 +156,7 @@
         }
 
         .social div:hover {
-            background-color: #1845ad;
+            background-color: #4a8ed6;
         }
 
         .social .fb {
@@ -164,25 +170,26 @@
         .app {
             position: absolute;
             top: 20px;
-            left: 20px; /* Adjust left and top values as needed */
-            color: #ffffff;
+            left: 20px;
+            color: #333;
             font-size: 24px;
             text-align: left;
         }
 
         a {
-            color: #23a2f6;
+            color: #007bff;
             text-decoration: none;
             margin-top: 20px;
             font-size: 16px;
+            text-align: center;
         }
 
         a:hover {
             text-decoration: underline;
         }
-       
     </style>
 </head>
+
 <body>
     <div class="background">
         <div class="shape"></div>
@@ -198,30 +205,31 @@
     {% endif %} -->
 
     <form action="" method="post">
-        {% csrf_token %} 
-        <h3>Signup Here</h3>
+        {% csrf_token %}
+        <h3>Create an Account</h3>
         <!-- Display error message -->
         {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
         {% endif %}
 
         <label for="username">Username</label>
-        <input type="text" placeholder="Username" name="username" id="username" required>
+        <input type="text" placeholder="Choose a username" name="username" id="username" required>
 
         <label for="email">Email</label>
-        <input type="email" placeholder="Email" name="email" id="email" required>
+        <input type="email" placeholder="Enter your email" name="email" id="email" required>
 
         <label for="password1">Password</label>
-        <input type="password" placeholder="Password" id="password1" name="password1" required>
+        <input type="password" placeholder="Create a password" id="password1" name="password1" required>
 
         <label for="password2">Confirm Password</label>
-        <input type="password" placeholder="Confirm Password" id="password2" name="password2" required>
+        <input type="password" placeholder="Confirm your password" id="password2" name="password2" required>
 
-        <button type="submit">Signup</button>
+        <button type="submit">Sign Up</button>
 
-       
+        
 
-        <a href="{% url 'login' %}" >Already have an account? Login here</a>
+        <a href="{% url 'login' %}">Already have an account? Login here</a>
     </form>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -9,7 +10,7 @@
     <style>
         /* Body styles */
         body {
-            background-color: #ecf0f1;
+            background-color: #f0f0f0;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -18,19 +19,21 @@
         /* Container styles */
         .container {
             margin-top: 60px;
-            margin-left: 0; /* Adjusted to 0 for left alignment */
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 800px;
         }
 
         /* Heading styles */
         h1 {
             font-size: 36px;
             color: #3498db;
-            text-align: left; /* Adjusted to left alignment */
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         /* Form styles */
         .box {
-            margin-top: 20px;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -48,7 +51,8 @@
             margin-bottom: 5px;
         }
 
-        select, input[type="file"] {
+        select,
+        input[type="file"] {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -74,7 +78,7 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            text-align: left; /* Adjusted to left alignment */
+            text-align: center;
         }
 
         .messages li {
@@ -96,15 +100,23 @@
 
         /* Log out button styles */
         .logout-button {
-            position: absolute;
-            top: 10px;
-            left:93%;
-            border-radius: 12px;
+            display: block;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 150px;
+            padding: 15px;
+            background-color: #e74c3c;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 
     <title>Image Upload Page</title>
 </head>
+
 <body>
     <a href="{% url 'logout' %}" class="btn btn-primary logout-button">Log out</a>
 
@@ -137,11 +149,13 @@
                 </div>
                 <div class="form-group">
                     <label for="image">Upload Image:</label>
-                    <input type="file" name="image" accept="image/*">
+                    <input type="file" name="image" accept="image/*" aria-describedby="fileHelp">
+                    <small id="fileHelp" class="form-text text-muted">Accepted file types: JPG, PNG, GIF.</small>
                 </div>
                 <button type="submit" class="btn-primary">Upload Image</button>
             </form>
         </div>
     </div>
 </body>
+
 </html>

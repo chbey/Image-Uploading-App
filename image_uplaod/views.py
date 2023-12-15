@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import UploadedImage
 from .forms import UploadImageForm
 from django.shortcuts import get_object_or_404, redirect
-from PIL import Image
+from PIL import Image,ImageOps 
 from django.http import HttpResponseBadRequest
 from io import BytesIO
 from .forms import ImageUploadForm
@@ -18,7 +18,8 @@ from django.utils.decorators import method_decorator
 from django.utils import timezone
 from .forms import ImageUploadForm
 from django.contrib import messages
-
+from django.core.files.base import ContentFile
+import io
 
 
 
@@ -26,61 +27,58 @@ from django.contrib import messages
 # uploaded_images = []
 # Create your views here.
 
-# View for the homepage
+
 @login_required
 def HomePage(request):
-    # Handle form submission
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
-
         if form.is_valid():
             uploaded_file = form.cleaned_data['image']
             image_type = form.cleaned_data['image_type']
 
-            # Validate image type based on orientation
             orientation = get_image_orientation(uploaded_file)
-            if (orientation == 'portrait' and image_type != 'portrait') or \
-               (orientation == 'landscape' and image_type != 'landscape'):
-                messages.error(request, f"Please select the correct image type ({orientation.capitalize()}) for the uploaded image.")
-                return redirect('home')
-            else:
-                
+            img = Image.open(uploaded_file)
 
-                fs = FileSystemStorage()
-                filename = fs.save(uploaded_file.name, uploaded_file)
+            # Resize and crop based on orientation
+            if orientation == 'portrait':
+                img = ImageOps.exif_transpose(img)
+                img.thumbnail((1080, 608))
+                img = ImageOps.fit(img, (1080, 608), method=0, bleed=0.0, centering=(0.5, 0.5))
+            elif orientation == 'landscape':
+                img.thumbnail((1080, 1350))
+                img = ImageOps.fit(img, (680,1070), method=0, bleed=0.0, centering=(0.5, 0.5))
 
-                # Create UploadedImage associated with the current user
-                uploaded_image = UploadedImage.objects.create(user=request.user, image=filename, orientation=orientation)
+            # Save the original image
+            fs = FileSystemStorage()
+            filename_original = fs.save(uploaded_file.name, uploaded_file)
 
-                # Update the upload_time field with the current timestamp
-                uploaded_image.upload_time = timezone.now()
-                uploaded_image.save()
+            # Save the resized image
+            output = io.BytesIO()
+            img.save(output, format='JPEG')
+            filename_resized = fs.save(f"resized_{uploaded_file.name}", ContentFile(output.getvalue()))
 
-                messages.success(request, 'Image uploaded successfully!')
-                # Redirect to the display page after a successful upload
-                return redirect('display_image')
-            
+            # Create UploadedImage instances associated with the current user
+            uploaded_image_original = UploadedImage.objects.create(user=request.user, image=filename_original, orientation=orientation)
+            uploaded_image_resized = UploadedImage.objects.create(user=request.user, image=filename_resized, orientation=orientation)
+
+            # Update the upload_time fields with the current timestamp
+            uploaded_image_original.upload_time = timezone.now()
+            uploaded_image_resized.upload_time = timezone.now()
+            uploaded_image_original.save()
+            uploaded_image_resized.save()
+
+            messages.success(request, 'Image uploaded and processed successfully!')
+            return redirect('display_image')
         else:
             messages.error(request, 'Error uploading image. Please check the Image type and try again.')
 
-    # Fetch user-specific images and order them by type and time of upload
     user_images = UploadedImage.objects.filter(user=request.user).order_by('orientation', '-upload_time')
-
-    # Separate images based on orientation (portrait and landscape)
-    user_portrait_images = user_images.filter(orientation='portrait')
-    user_landscape_images = user_images.filter(orientation='landscape')
-
-    # Rearrange images to display Landscape images first, followed by Portrait images
-    ordered_user_images = list(user_landscape_images) + list(user_portrait_images)
-
     form = ImageUploadForm()
-    # Access the username of the logged-in user
     username = request.user.username
-    
 
-    return render(request, 'home.html', {'ordered_user_images': ordered_user_images, 'form': form ,'username': username})
+    return render(request, 'home.html', {'user_images': user_images, 'form': form, 'username': username})
 
-# Add this function to determine image orientation
+
 def get_image_orientation(image):
     img = Image.open(image)
     width, height = img.size
